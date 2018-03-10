@@ -15,7 +15,6 @@ class App extends Component {
       <div>
         <Header/>
         <Route path="/" exact component={Landing}/>
-        {/*<Route path="/surveys" exact component={}/>*/}
         <Route path="/surveys/new"/>
       </div>
     )
