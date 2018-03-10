@@ -21,31 +21,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./services/passport');
-// require('./routes/auth')(app);
+require('./routes/auth')(app);
 require('./routes/billing')(app);
-
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile','email']
-}));
-
-app.get('/auth/google/callback', passport.authenticate('google'), (req,res) => {
-  res.redirect('/surveys');
-});
-
-app.get('/api/current_user', (req,res) => {
-  res.send(req.user);
-});
-
-app.get('/api/logout', (req,res) => {
-  req.logout();
-  res.redirect('/');
-});
 
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   const path = require('path');
-  app.get('/*', (req,res) => {
-    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+  app.get('*', (req,res) => {
+    res.sendFile('Hewllo');
   });
 }
 
