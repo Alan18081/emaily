@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://serene-retreat-82642.herokuapp.com/",
+  "proxy": "https://photobook10.herokuapp.com/",
   "homepage": "https://alan18081.github.io",
   "dependencies": {
     "autoprefixer": "7.1.6",
