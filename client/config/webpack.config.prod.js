@@ -207,9 +207,7 @@ module.exports = {
                         ],
                       },
                     },
-                    {
-                      loader: 'sass-loader'
-                    }
+                    'sass-loader'
                   ],
                 },
                 extractTextPluginOptions
