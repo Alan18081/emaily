@@ -2,14 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/auth/google": {
-      "target": "http://localhost:5000"
-    },
-    "/api/*": {
-      "target": "http://localhost:5000"
-    }
-  },
+  "proxy": "https://serene-retreat-82642.herokuapp.com/",
   "homepage": "https://alan18081.github.io",
   "dependencies": {
     "autoprefixer": "7.1.6",
