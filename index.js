@@ -4,6 +4,7 @@ const cookiesSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 mongoose.connect(keys.mongoURI);
 require('./models/User');
@@ -25,10 +26,9 @@ require('./routes/auth')(app);
 require('./routes/billing')(app);
 
 if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  const path = require('path');
-  app.get('*', (req,res) => {
-    res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+  app.use(express.static(path.join(__dirname,'client','build')));
+  app.get('/*', (req,res) => {
+    res.sendFile(path.join(__dirname,'client','build','main.html'));
   });
 }
 
