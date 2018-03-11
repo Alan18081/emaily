@@ -25,7 +25,7 @@ app.use(passport.session());
 require('./services/passport');
 require('./routes/auth')(app);
 require('./routes/billing')(app);
-require('/routes/survey')(app);
+require('./routes/survey')(app);
 
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname,'client','build')));
