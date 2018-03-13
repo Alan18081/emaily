@@ -28,7 +28,8 @@ module.exports = app => {
         if(match) {
           return {
             email,
-            ...match
+            surveyId: match.surveyId,
+            choice: match.choice
           };
         }
       })
