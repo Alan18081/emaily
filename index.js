@@ -9,6 +9,7 @@ const path = require('path');
 mongoose.connect(keys.mongoURI);
 require('./models/User');
 require('./models/Survey');
+require('./models/Draft');
 
 const app = express();
 
@@ -26,6 +27,7 @@ require('./services/passport');
 require('./routes/auth')(app);
 require('./routes/billing')(app);
 require('./routes/survey')(app);
+require('./routes/draft')(app);
 
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname,'client','build')));

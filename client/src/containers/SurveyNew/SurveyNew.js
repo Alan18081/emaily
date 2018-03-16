@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {reduxForm} from 'redux-form';
 
-import SurveyForm from '../SurveyForm/SurveyForm';
+import SurveyFormWrapper from '../SurveyFormWrapper/SurveyFormWrapper';
 import SurveyFormReview from '../../components/SurveyFormReview/SurveyFormReview';
 
 class SurveyNew extends Component {
@@ -13,12 +13,13 @@ class SurveyNew extends Component {
       showFormReview: !prevState.showFormReview
     }));
   };
+
   renderContent() {
     if(this.state.showFormReview) {
       return <SurveyFormReview onCancel={this.toggleReviewForm}/>
     }
     else {
-      return <SurveyForm onSubmit={this.toggleReviewForm}/>
+      return <SurveyFormWrapper onSubmit={this.toggleReviewForm}/>
     }
   }
   render() {

@@ -2,43 +2,44 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
 
+import SurveyListItem from '../../components/SurveyListItem/SurveyListItem';
+import SurveySort from '../../components/SurveySort/SurveySort';
+import Spinner from '../../components/UI/Spinner/Spinner';
+
 class SurveyList extends Component {
   componentDidMount() {
     this.props.onFetchSurveys();
   }
   renderSurveys() {
-    console.log(this.props.surveys);
-    return this.props.surveys.map(({_id,title,body,dateSend,yes,no}) => (
-      <div key={_id} className="card">
-        <div className="card-content">
-          <span className="card-title">{title}</span>
-          <p>{body}</p>
-          <p className="right">
-            Sent on {new Date(dateSend).toLocaleDateString()}
-          </p>
-        </div>
-        <div className="card-action">
-          <span className="purple-text" style={{marginRight: '10px'}}>Yes: {yes}</span>
-          <span className="purple-text" style={{marginRight: '10px'}}>No: {no}</span>
-        </div>
-      </div>
+    return this.props.surveys.map((survey) => (
+      <SurveyListItem key={survey._id} {...survey} delSurvey={this.props.onDeleteSurvey}/>
     ));
   }
+  sortSurveyHandler = e => {
+    const value = e.target.value;
+    this.props.onSortSurvey(value);
+  };
   render() {
     return (
       <div>
-        {this.renderSurveys()}
+        {this.props.surveys.length ? <SurveySort changed={this.sortSurveyHandler}/> : null}
+        <div>
+          {this.props.loading ? <Spinner position="center-block"/> : this.renderSurveys()}
+        </div>
       </div>
     )
   }
 }
 
 const mapStateToProps = ({surveys}) => ({
-    surveys
+  surveys: surveys.items,
+  loading: surveys.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-  onFetchSurveys: () => dispatch(actions.fetchSurveys())
+  onFetchSurveys: () => dispatch(actions.fetchSurveys()),
+  onDeleteSurvey: (id) => dispatch(actions.deleteSurvey(id)),
+  onSortSurvey: (type) => dispatch(actions.sortSurveys(type))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(SurveyList);

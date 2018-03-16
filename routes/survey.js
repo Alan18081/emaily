@@ -16,6 +16,12 @@ module.exports = app => {
     res.send(surveys);
   });
 
+  app.delete('/api/surveys/:surveyId', async (req,res) => {
+    const id = req.params.surveyId;
+    await Survey.deleteOne({_user: req.user.id,_id: id});
+    res.sendStatus(200);
+  });
+
   app.get('/api/surveys/:surveyId/:choice',(req,res) => {
     res.send('Thank you for feedback');
   });
@@ -55,28 +61,32 @@ module.exports = app => {
     });
   });
 
-  app.post('/api/surveys',requireLogin,requireCredits,async (req,res) => {
-    const {title,subject,body,recipients} = req.body;
+  app.post('/api/surveys',requireLogin,requireCredits, async (req,res) => {
+    const {title,subject,body,recipients,from} = req.body;
     const survey = new Survey({
       title,
       subject,
       body,
+      from,
       recipients: recipients.split(',').map(email => ({email})),
       _user: req.user.id,
       dateSend: Date.now()
     });
 
-    const mailer = new Mailer(survey,surveyTemplate(survey));
+    const mailer = new Mailer(survey,surveyTemplate(survey),from);
+
+    let user;
 
     try {
       const res = await mailer.send();
       await survey.save();
       req.user.credits -= 1;
-      const user = await req.user.save();
-      res.send(user);
+      user = await req.user.save();
     }
     catch(err) {
+      console.log(err);
       res.status(422).send(err);
     }
+    res.send(user);
   });
 };

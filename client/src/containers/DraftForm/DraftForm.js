@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 import SurveyField from '../../components/SurveyField/SurveyField';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import fields from './formFields';
+import fields from '../SurveyForm/formFields';
 import validateForm from '../../utils/validate';
+import draftSelector from '../../selectors/draftInfo';
 
-class SurveyForm extends Component {
+class DraftForm extends Component {
   renderFields() {
     return fields.map(field => (
       <Field
@@ -19,13 +21,12 @@ class SurveyForm extends Component {
     ))
   }
   render() {
-    console.log(this.props.loading);
     return (
       <div>
         <form onSubmit={this.props.handleSubmit(this.props.onSubmit)}>
           {this.renderFields()}
           <div>
-            <Link to="/surveys">
+            <Link to="/drafts">
               <button className="red white-text btn">Cancel</button>
             </Link>
             <button className="deep-purple right white-text btn">
@@ -44,8 +45,17 @@ class SurveyForm extends Component {
   }
 }
 
-export default reduxForm({
-    form: 'surveyForm',
+const mapStateToProps = state => {
+  return {
+    initialValues: draftSelector(state),
+    loading: state.drafts.loading
+  }
+};
+
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: 'draftForm',
     validate: values => validateForm(fields,values),
     destroyOnUnmount: false
-  })(SurveyForm);
+  })(DraftForm)
+);

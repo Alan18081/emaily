@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import {Route,Switch,withRouter} from 'react-router-dom';
+import {Route,Switch,withRouter,Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
 
 import Header from '../Header/Header';
 import Landing from '../../components/Landing/Landing';
-import Dashboard from '../../components/Dashboard/Dashboard';
-import SurveyNew from '../../containers/SurveyNew/SurveyNew';
+import SurveyContainer from '../../components/SurveyContainer/SurveyContainer';
+import SurveyNew from '../SurveyNew/SurveyNew';
+import DraftContainer from '../../components/DraftContainer/DraftContainer';
+import DraftEdit from '../DraftEdit/DraftEdit'
 
 class App extends Component {
   componentDidMount() {
@@ -16,11 +18,15 @@ class App extends Component {
     return (
       <div>
         <Header/>
-        <main style={{marginTop: '30px'}}>
+        <main style={{marginTop: '30px'}} className="container">
           <Switch>
-            <Route path="/" exact component={Landing}/>
-            <Route path="/surveys" exact component={Dashboard}/>
-            <Route path="/surveys/new" exact component={SurveyNew}/>
+            <Route path="/" exact render={() => {
+              return <Landing user={this.props.user}/>
+            }}/>
+            <Route path="/surveys" exact component={SurveyContainer}/>
+            <Route path="/drafts" exact component={DraftContainer}/>
+            <Route path="/surveys/new" component={SurveyNew}/>
+            <Route path="/drafts/edit" component={DraftEdit}/>
           </Switch>
         </main>
       </div>
@@ -28,4 +34,10 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect(null,actions)(App));
+const mapStateToProps = state => {
+  return {
+    user: state.auth
+  }
+};
+
+export default withRouter(connect(mapStateToProps,actions)(App));
