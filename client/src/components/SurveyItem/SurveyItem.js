@@ -1,22 +1,26 @@
 import React from 'react';
 
-const surveyListItem = ({_id,body,dateSend,title,yes,no,delSurvey}) => (
+import './SurveyItem.sass';
+
+import ProgressBar from '../UI/ProgressBar/ProgressBar';
+
+const surveyListItem = ({_id,body,dateSend,title,yes,no,delSurvey,recipients}) => (
   <div key={_id} className="card">
-    <div className="card-content" style={{overflow: 'hidden'}}>
+    <div className="card-content SurveyItem__content">
       <div className="left">
         <span className="card-title">{title}</span>
         <p>{body}</p>
       </div>
       <div className="right">
         <div>Sent on {new Date(dateSend).toLocaleDateString()}</div>
-        <button className="right" style={{background: 'none',border:'none'}}>
+        <button className="right SurveyItem__btn">
           <i className="material-icons" onClick={() => delSurvey(_id)}>delete</i>
         </button>
       </div>
     </div>
     <div className="card-action">
-      <span className="purple-text" style={{marginRight: '10px'}}>Yes: {yes}</span>
-      <span className="purple-text" style={{marginRight: '10px'}}>No: {no}</span>
+      <ProgressBar label="Yes" color="green" chunk={yes} full={recipients.length}/>
+      <ProgressBar label="No" color="red" chunk={no} full={recipients.length}/>
     </div>
   </div>
 );

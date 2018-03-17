@@ -4,14 +4,16 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
 import DraftFormWrapper from '../DraftFormWrapper/DraftFormWrapper';
-import DraftFormReview from '../../components/DraftFormReview/DraftFormReview';
+import DraftFormReview from '../DraftFormReview/DraftFormReview';
 
 class DraftEdit extends Component {
   state = {
     showFormReview: false
   };
   componentDidMount() {
-    !this.props.activeDraft ? this.props.history.replace('/drafts') : '';
+    if(this.props.activeDraft) {
+      this.props.history.replace('/drafts')
+    }
   }
   toggleReviewForm = () => {
     this.setState(prevState => ({

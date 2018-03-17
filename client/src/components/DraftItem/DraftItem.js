@@ -1,15 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import './DraftItem.sass';
+
 const draftListItem = ({_id,body,dateSend,title,yes,no,delDraft,showDraftForm}) => (
   <div key={_id} className="card">
-    <div className="card-content" style={{overflow: 'hidden'}}>
+    <div className="card-content DraftItem__content">
       <div className="left">
-        <span className="card-title">{title || <span style={{color: 'gray'}}>Empty title</span>}</span>
-        <p>{body || <span style={{color: 'gray'}}>Empty body</span>}</p>
+        <span className="card-title">{title || <span className="DraftItem__placeholder">Empty title</span>}</span>
+        <p>{body || <span className="DraftItem__placeholder">Empty body</span>}</p>
       </div>
       <div className="right">
-        <button className="right" style={{background: 'none',border:'none'}}>
+        <button className="right DraftItem__btn">
           <i className="material-icons" onClick={() => delDraft(_id)}>delete</i>
         </button>
       </div>

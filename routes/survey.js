@@ -1,18 +1,19 @@
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
 const mongoose = require('mongoose');
+const path = require('path');
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Path = require('path-parser');
 const {URL} = require('url');
 const _ = require('lodash');
+const feedbackTemplate = require('../services/htmlTemplate/feedbackTemplate');
 
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
   app.get('/api/surveys', requireLogin, async (req,res) => {
-    const surveys = await Survey.find({ _user: req.user.id })
-      .select({recipients: false});
+    const surveys = await Survey.find({ _user: req.user.id });
     res.send(surveys);
   });
 
@@ -23,11 +24,12 @@ module.exports = app => {
   });
 
   app.get('/api/surveys/:surveyId/:choice',(req,res) => {
-    res.send('Thank you for feedback');
+    res.send(feedbackTemplate);
   });
 
   app.post('/api/surveys/webhooks',(req,res) => {
-    _.chain(req.body)
+    console.log('Mark');
+    const events = _(req.body)
       .map(({url,email}) => {
         const p = new Path('/api/surveys/:surveyId/:choice');
         const match = p.test(new URL(url).pathname);
@@ -41,13 +43,15 @@ module.exports = app => {
       })
       .compact()
       .uniqBy('email','surveyId')
-      .each(({surveyId,email,choice}) => {
-        Survey.updateOne(
+      .value();
+    console.log(events);
+      events.forEach(({surveyId,email,choice}) => {
+         Survey.updateOne(
           {
-            id: surveyId,
+            _id: surveyId,
             recipients: {
               $elemMatch: {
-                email,
+                email: email,
                 responded: false
               }
             }
@@ -78,7 +82,7 @@ module.exports = app => {
     let user;
 
     try {
-      const res = await mailer.send();
+      await mailer.send();
       await survey.save();
       req.user.credits -= 1;
       user = await req.user.save();

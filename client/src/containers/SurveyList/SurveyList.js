@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
 
-import SurveyListItem from '../../components/SurveyListItem/SurveyListItem';
+import SurveyListItem from '../../components/SurveyItem/SurveyItem';
 import SurveySort from '../../components/SurveySort/SurveySort';
 import Spinner from '../../components/UI/Spinner/Spinner';
 

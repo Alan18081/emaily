@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {reduxForm} from 'redux-form';
 
 import SurveyFormWrapper from '../SurveyFormWrapper/SurveyFormWrapper';
-import SurveyFormReview from '../../components/SurveyFormReview/SurveyFormReview';
+import SurveyFormReview from '../SurveyFormReview/SurveyFormReview';
 
 class SurveyNew extends Component {
   state = {

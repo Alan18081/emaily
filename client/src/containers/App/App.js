@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {Route,Switch,withRouter,Redirect} from 'react-router-dom';
+import {Route,Switch,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
+
+import './App.sass';
 
 import Header from '../Header/Header';
 import Landing from '../../components/Landing/Landing';
@@ -18,7 +20,7 @@ class App extends Component {
     return (
       <div>
         <Header/>
-        <main style={{marginTop: '30px'}} className="container">
+        <main className="container App__content">
           <Switch>
             <Route path="/" exact render={() => {
               return <Landing user={this.props.user}/>

@@ -4,16 +4,18 @@ import {
   FETCH_SURVEYS,
   DELETE_SURVEY,
   SORT_SURVEYS,
-  SHOW_DRAFT_LOADER,
-  FETCH_SURVEYS_LOADER
+  SEND_SURVEY_LOADER,
+  FETCH_SURVEYS_LOADER,
+  SENT_SURVEY
 } from './types';
 
 export const submitSurvey = (values,history) => {
   return async dispatch => {
-    dispatch({type: SHOW_DRAFT_LOADER});
+    dispatch({type: SEND_SURVEY_LOADER});
     const res = await axios.post('/api/surveys',values);
     history.push('/surveys');
     dispatch({type: FETCH_USER, payload: res.data});
+    dispatch({type: SENT_SURVEY});
   };
 };
 
@@ -28,8 +30,7 @@ export const fetchSurveys = () => {
 export const deleteSurvey = id => {
   return async dispatch => {
     dispatch({type: DELETE_SURVEY, payload: id});
-    const res = await axios.delete(`/api/surveys/${id}`);
-    dispatch({type: FETCH_USER, payload: res.data})
+    await axios.delete(`/api/surveys/${id}`);
   }
 };
 

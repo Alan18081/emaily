@@ -5,7 +5,7 @@ export default [
     noValueError: 'You should provide from email'
   },
   {
-    label: 'SurveyContainer title',
+    label: 'Survey title',
     name: 'title',
     noValueError: 'You should provide title'
   },

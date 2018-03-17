@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions';
 
 import SurveySort from '../../components/SurveySort/SurveySort';
-import DraftListItem from '../../components/DraftListItem/DraftListItem';
+import DraftListItem from '../../components/DraftItem/DraftItem';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 class DraftList extends Component {

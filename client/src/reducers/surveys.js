@@ -1,8 +1,29 @@
-import {FETCH_SURVEYS, DELETE_SURVEY,SORT_SURVEYS,FETCH_SURVEYS_LOADER} from '../actions/types';
+import {
+  FETCH_SURVEYS,
+  DELETE_SURVEY,
+  SORT_SURVEYS,
+  FETCH_SURVEYS_LOADER,
+  SEND_SURVEY_LOADER,
+  SENT_SURVEY
+} from '../actions/types';
 
 const initialState = {
   items: [],
   loading: false
+};
+
+const sendSurveyLoader = (state) => {
+  return {
+    ...state,
+    loading: true
+  }
+};
+
+const sentSurvey = (state) => {
+  return {
+    ...state,
+    loading: false
+  }
 };
 
 const fetchSurveysLoader = (state) => {
@@ -38,6 +59,10 @@ const sortSurveys = (state) => {
 
 const surveysReducer = (state = initialState,action) => {
   switch(action.type) {
+    case SENT_SURVEY:
+      return sentSurvey(state);
+    case SEND_SURVEY_LOADER:
+      return sendSurveyLoader(state);
     case FETCH_SURVEYS_LOADER:
       return fetchSurveysLoader(state);
     case FETCH_SURVEYS:
