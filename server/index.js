@@ -1,9 +1,40 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const cookiesSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+mongoose.connect(keys.mongoURI);
+require('./models/User');
+require('./models/Survey');
+require('./models/Draft');
+
 const app = express();
 
-app.get('/', (req,res) => {
-  res.send({name: 'Alan'});
-});
+app.use(bodyParser.json());
+app.use(
+  cookiesSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./services/passport');
+require('./routes/auth')(app);
+require('./routes/billing')(app);
+require('./routes/survey')(app);
+require('./routes/draft')(app);
+
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname,'client','build')));
+  app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname,'client','build','main.html'));
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 
