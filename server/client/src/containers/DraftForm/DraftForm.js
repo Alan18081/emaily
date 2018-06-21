@@ -22,7 +22,7 @@ class DraftForm extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={{marginBottom: '20px'}}>
         <form onSubmit={this.props.handleSubmit(this.props.onSubmit)}>
           {this.renderFields()}
           <div>
